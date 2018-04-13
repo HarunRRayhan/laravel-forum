@@ -27,7 +27,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     function a_user_can_read_single_thread() {
 
-	    $response = $this->get('/threads/' . $this->thread->id );
+	    $response = $this->get("/threads/{$this->thread->channel->slug}/{$this->thread->id}" );
 
 	    $response->assertSee($this->thread->title);
     }
@@ -36,7 +36,7 @@ class ReadThreadsTest extends TestCase
     function a_user_can_read_replies_that_are_associated_with_a_thread() {
 		$reply = factory('App\Reply')->create(['thread_id' => $this->thread->id ]);
 
-	   $this->get('/threads/' . $this->thread->id )
+	   $this->get("/threads/{$this->thread->channel->slug}/{$this->thread->id}" )
 		   ->assertSee($reply->body);
 
     }

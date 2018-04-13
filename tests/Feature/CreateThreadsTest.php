@@ -12,19 +12,14 @@ class CreateThreadsTest extends TestCase
 
 	/** @test */
 	function guest_may_not_create_thread() {
-		$this->expectException(AuthenticationException::class);
+		$this->withExceptionHandling();
 
-		$thread = make('App\Thread');
+		$this->get('/threads/create')
+		     ->assertRedirect('/login');
 
-		$this->post('/threads', $thread->toArray());
+		$this->post('/threads')
+		     ->assertRedirect('/login');
 
-	}
-
-	/** @test */
-	function guest_cannot_see_the_create_thread_page() {
-		$this->withExceptionHandling()
-			->get('/threads/create')
-			->assertRedirect('/login');
 	}
 
     /** @test */
@@ -33,7 +28,7 @@ class CreateThreadsTest extends TestCase
 	    $this->signIn();
 
 	    // When we hit the endpoint to create new thread
-		$thread = make('App\Thread');
+		$thread = create('App\Thread');
 
 		$this->post('/threads', $thread->toArray());
 

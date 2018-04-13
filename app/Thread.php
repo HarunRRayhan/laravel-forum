@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+	protected $guarded = [];
+
 	/**
 	 * Fetch a path to the current thread
 	 *
@@ -17,6 +19,14 @@ class Thread extends Model
 
     public function replies() {
     	return $this->hasMany(Reply::class);
+    }
+
+    public function creator() {
+    	return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function addReply($reply){
+    	$this->replies()->create($reply);
     }
 
 }
